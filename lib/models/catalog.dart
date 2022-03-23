@@ -1,15 +1,5 @@
 class CatalogModel {
-  static final items = [
-    Item(
-      name: "Iphone 12 Pro",
-      color: "#33505a",
-      desc: "Apple Iphone 12th Gen",
-      id: 1,
-      image:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRISJ6msIu4AU9_M9ZnJVQVFmfuhfyJjEtbUm3ZK11_8IV9TV25-1uM5wHjiFNwKy99w0mR5Hk&usqp=CAc",
-      price: 999,
-    ),
-  ];
+  static List<Item> items = [];
 }
 
 class Item {
@@ -28,4 +18,24 @@ class Item {
     required this.image,
     required this.price,
   });
+
+  factory Item.fromMap(Map<String, dynamic> map) {
+    return Item(
+      name: map["name"],
+      color: map["color"],
+      desc: map["desc"],
+      id: map["id"],
+      image: map["image"],
+      price: map["price"],
+    );
+  }
+
+  toMap() => {
+        "id": id,
+        "name": name,
+        "color": color,
+        "desc": desc,
+        "image": image,
+        "price": price,
+      };
 }
