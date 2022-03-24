@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_catalog/models/catalog.dart';
-import 'package:flutter_catalog/widgets/drawer.dart';
+import 'package:flutter_catalog/widgets/themes.dart';
+import 'package:velocity_x/velocity_x.dart';
+
+import '../widgets/home_widgets/catalog_header.dart';
+import '../widgets/home_widgets/catalog_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,66 +36,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Catalog",
-          textScaleFactor: 1.4,
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
+      backgroundColor: MyTheme.creamColor,
+      body: SafeArea(
+        child: Container(
+          padding: Vx.m20,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CatalogHeader(),
+              SizedBox(height: 20),
+              if (CatalogModel.items.isNotEmpty)
+                CatalogList().py8().expand()
+              else
+                CircularProgressIndicator().centered().expand(),
+            ],
           ),
-          itemBuilder: (context, index) {
-            final item = CatalogModel.items[index];
-            return Card(
-              clipBehavior: Clip.antiAlias,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: GridTile(
-                header: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(12),
-                  child: Text(
-                    item.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurple,
-                  ),
-                ),
-                footer: Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.all(12.0),
-                  child: Text(
-                    "\$${item.price.toString()}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                  ),
-                ),
-                child: Image.network(
-                  item.image,
-                ),
-              ),
-            );
-          },
-          itemCount: CatalogModel.items.length,
         ),
       ),
-      drawer: MyDrawer(),
     );
   }
 }
