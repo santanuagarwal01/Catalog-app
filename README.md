@@ -1,2 +1,2 @@
-# Flutter-Project
+# Catalog-App
 A flutter application
