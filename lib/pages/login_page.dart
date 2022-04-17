@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_catalog/utils/routes.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -16,11 +17,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         changeButton = true;
       });
-      await Future.delayed(Duration(milliseconds: 500));
-      await Navigator.pushNamed(
-        context,
-        MyRoutes.homeRoute,
-      );
+      await Future.delayed(Duration(seconds: 1));
+      await context.vxNav.push(Uri.parse(MyRoutes.homeRoute));
       setState(() {
         changeButton = false;
       });
@@ -30,106 +28,104 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
-      child: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Image.asset(
-                "assets/images/login_image.png",
-                fit: BoxFit.cover,
-              ),
-              SizedBox(height: 20),
-              Text(
-                "Welcome $name",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 26,
-                ),
-              ),
-              SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 16,
-                  horizontal: 32,
-                ),
-                child: Column(
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(
-                        hintText: "Enter username",
-                        label: Text("Username"),
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Username cannot be empty";
-                        } else {
-                          return null;
-                        }
-                      },
-                      onChanged: (value) {
-                        name = value;
-                        setState(() {});
-                      },
+      color: context.canvasColor,
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Container(
+                  height: 300,
+                  child: VxArc(
+                    height: 15,
+                    edge: VxEdge.BOTTOM,
+                    arcType: VxArcType.CONVEY,
+                    child: Image.asset(
+                      "assets/images/login_image.png",
+                      fit: BoxFit.cover,
                     ),
-                    TextFormField(
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Enter password",
-                        label: Text("Password"),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Welcome !",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22,
+                  ),
+                ),
+                SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 32,
+                  ),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Enter username",
+                          label: Text("Username"),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Username cannot be empty";
+                          } else {
+                            return null;
+                          }
+                        },
+                        onChanged: (value) {
+                          name = value;
+                          setState(() {});
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "Password cannot be empty";
-                        } else if (value.length < 6) {
-                          return "Password length cannot be less than 6";
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    SizedBox(height: 40),
-                    Material(
-                      color: Colors.deepPurple,
-                      borderRadius:
-                          BorderRadius.circular(changeButton ? 50 : 8),
-                      child: InkWell(
-                        onTap: () => moveToHome(context),
-                        child: AnimatedContainer(
-                          height: 45,
-                          width: changeButton ? 45 : 150,
-                          alignment: Alignment.center,
-                          child: changeButton
-                              ? Icon(Icons.done, color: Colors.white)
-                              : Text(
-                                  "Login",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
+                      TextFormField(
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: "Enter password",
+                          label: Text("Password"),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "Password cannot be empty";
+                          } else if (value.length < 6) {
+                            return "Password length cannot be less than 6";
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: 20),
+                      Material(
+                        color: Vx.indigo600,
+                        borderRadius:
+                            BorderRadius.circular(changeButton ? 50 : 8),
+                        child: InkWell(
+                          onTap: () => moveToHome(context),
+                          child: AnimatedContainer(
+                            height: 45,
+                            width: changeButton ? 45 : 150,
+                            alignment: Alignment.center,
+                            child: changeButton
+                                ? Icon(Icons.done, color: Colors.white)
+                                : Text(
+                                    "Login",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                ),
-                          duration: Duration(milliseconds: 500),
+                            duration: Duration(seconds: 1),
+                          ),
                         ),
                       ),
-                    ),
-                    // ElevatedButton(
-                    //   child: Text("Login"),
-                    //   onPressed: () {
-                    //     Navigator.pushNamed(
-                    //       context,
-                    //       MyRoutes.homeRoute,
-                    //     );
-                    //   },
-                    //   style: TextButton.styleFrom(
-                    //     minimumSize: Size(150, 40),
-                    //   ),
-                    // ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
